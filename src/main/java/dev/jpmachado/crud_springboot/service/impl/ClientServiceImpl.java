@@ -1,6 +1,7 @@
 package dev.jpmachado.crud_springboot.service.impl;
 
 import dev.jpmachado.crud_springboot.model.dao.ClientDao;
+import dev.jpmachado.crud_springboot.model.dto.ClientDto;
 import dev.jpmachado.crud_springboot.model.entity.Client;
 import dev.jpmachado.crud_springboot.service.IClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,21 @@ public class ClientServiceImpl implements IClientService {
         return (ArrayList<Client>) clientDao.findAll();
     }
 
+    @Override
+    public boolean existsById(Integer id) {
+        return clientDao.existsById(id);
+    }
+
     @Transactional
     @Override
-    public Client save(Client client) {
+    public Client save(ClientDto clientDto) {
+        Client client = Client.builder()
+                .id(clientDto.getId())
+                .firstName(clientDto.getFirstName())
+                .lastName(clientDto.getLastName())
+                .email(clientDto.getEmail())
+                .createdAt(clientDto.getCreatedAt())
+                .build();
         return clientDao.save(client);
     }
 
